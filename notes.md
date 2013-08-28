@@ -10,3 +10,18 @@ we can instead wrap them into a single variable:
 betas = mc.Uniform("betas", 0, 1, size=N)
 ```
 
+===
+
+**Warning: Don't update stochastic variables' values in-place.**
+
+Stochastic objects' values should not be updated in-place. This confuses PyMC's caching scheme... The only way a stochastic variable's value should be updated is using statements of the following form:
+    ```
+    A.value = new_value
+    ```
+The following are in-place updates and should never be used:
+    ```
+    A.value += 3
+    A.value[2,1] = 5
+    A.value.attribute = new_attribute_value
+    ```
+
